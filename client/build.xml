@@ -1,0 +1,7 @@
+<project default="flash">
+	<target name="flash">
+		<property file="build.properties"/>
+		<echo>Building Client</echo>
+		<ant antfile="build.xml" dir="kavalok-build" target="build"/>
+	</target>
+</project>

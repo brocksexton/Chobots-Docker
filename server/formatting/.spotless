@@ -1,0 +1,36 @@
+# Spotless configuration file
+# This file provides additional configuration for the Spotless Maven plugin
+
+# Java formatting configuration
+java {
+  # Use Google Java Format
+  googleJavaFormat('0.10.0') {
+    style = 'GOOGLE'
+  }
+  
+  # Remove unused imports
+  removeUnusedImports()
+  
+  # Import order
+  importOrder('java', 'javax', 'org', 'com', '')
+  
+  # License header (optional - uncomment if you want to add license headers)
+  # licenseHeader('/* Copyright (C) $YEAR */')
+  
+  # Exclude certain files from formatting
+  targetExclude(
+    '**/generated/**',
+    '**/build/**',
+    '**/target/**'
+  )
+}
+
+# General exclusions
+exclude {
+  '**/build/**'
+  '**/target/**'
+  '**/.git/**'
+  '**/node_modules/**'
+  '**/*.min.js'
+  '**/*.min.css'
+} 

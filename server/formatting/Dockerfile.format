@@ -1,0 +1,23 @@
+FROM openjdk:8-jdk-slim
+
+# Install Maven
+RUN apt-get update && apt-get install -y \
+    maven \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /server
+
+# Copy pom.xml first for better caching
+COPY pom.xml /server/pom.xml
+
+# Download dependencies
+RUN mvn -f /server/pom.xml dependency:go-offline
+
+# Create a script for formatting operations
+COPY formatting/format.sh /format.sh
+RUN chmod +x /format.sh
+
+# Use exec form to properly handle arguments
+ENTRYPOINT ["/format.sh"]
+CMD ["check"] 

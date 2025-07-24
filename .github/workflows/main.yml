@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and start containers
+        run: |
+          docker compose up --build -d
+
+      - name: Verify Red5 RTMP and Jetty JSP Running
+        run: |
+          set -e
+
+          # Helper to test if a TCP port is open without installing extra tools
+          check_port() {
+            (echo > /dev/tcp/$1/$2) >/dev/null 2>&1
+          }
+
+          echo "Waiting for RTMP port to open…"
+          for i in {1..5}; do
+            if check_port localhost 8935; then
+              echo "RTMP port is open"
+              break
+            fi
+            echo "Attempt $i: still closed – retrying in 10 s"
+            sleep 10
+          done
+          if ! check_port localhost 8935; then
+            echo "RTMP port did not open in time"
+            docker compose logs
+            exit 1
+          fi
+
+          echo "Waiting for JSP endpoint to return 200…"
+          for i in {1..5}; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5080/kavalok/jsp/clients_short.jsp || true)
+            if [ "$code" = "200" ]; then
+              echo "JSP endpoint responded with 200"
+              exit 0
+            fi
+            echo "Attempt $i: HTTP $code – retrying in 10 s"
+            sleep 10
+          done
+
+          echo "JSP endpoint did not return 200 in time"
+          docker compose logs
+          exit 1
+
+      - name: Shut down containers
+        if: always()
+        run: docker compose down -v

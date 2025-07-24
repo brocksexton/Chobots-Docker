@@ -1,0 +1,13 @@
+services:
+  format:
+    build: 
+      context: ..
+      dockerfile: formatting/Dockerfile.format
+    volumes:
+      - ../:/server
+      - maven-cache:/root/.m2
+    environment:
+      - MAVEN_OPTS=-Dmaven.repo.local=/root/.m2/repository
+
+volumes:
+  maven-cache: 

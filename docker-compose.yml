@@ -1,0 +1,42 @@
+services:
+    server:
+        build: server
+        ports:
+           - 8935:1935
+           - 5080:5080
+        depends_on:
+            database:
+                condition: service_healthy
+    client:
+        build: client
+        ports:
+            - 8080:80
+        volumes:
+            - ./client/website:/usr/share/nginx/html
+    database:
+        image: mariadb:11.8.2-noble
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: chobots
+            MYSQL_USER: user
+            MYSQL_PASSWORD: user
+        command: [
+            "mariadbd",
+            "--log-bin=mysql-bin",
+            "--server-id=1",
+            "--character-set-server=utf8mb4",
+            "--collation-server=utf8mb4_unicode_ci",
+            "--sql-mode=STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+        ]
+        healthcheck:
+            test: [ "CMD-SHELL", "mariadb-admin ping -uroot -proot --silent" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        ports:
+            - 3307:3306
+        volumes:
+            - database:/var/lib/mysql
+
+volumes:
+    database:

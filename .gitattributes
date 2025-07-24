@@ -1,0 +1,20 @@
+# Default to LF line endings
+* text=auto eol=lf
+
+# Treat known binary file types as binary
+*.swf binary
+*.jar binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.exe binary
+*.dll binary
+*.class binary
+*.ttf binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.bmp binary
+*.swc binary

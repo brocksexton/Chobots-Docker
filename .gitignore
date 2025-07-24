@@ -1,0 +1,6 @@
+trunk/kavalok-build/bin
+server/webapps/*
+server/red5.jar
+client/bin
+client/kavalok-build/fchs-input
+.idea
