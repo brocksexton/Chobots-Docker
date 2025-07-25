@@ -24,6 +24,9 @@ Goals of this project are as follows but not limited to:
  - [ ] Produce detailed software architecture documents
  - [ ] Salt and hash passwords
  - [ ] Server-side validation of superuser commands
+ - [ ] Safely enable guest accounts & patch specific guest exploits
+ - [ ] Fix partner login
+ - [ ] Reauthenticate client server moves (including first login) via auth tokens rather than client stored password
 
 ## Running the code
 
