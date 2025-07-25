@@ -200,7 +200,11 @@ public class UserUtil {
     new MarketingInfoDAO(session).makePersistent(info);
 
     GameCharDAO charDAO = new GameCharDAO(session);
-    GameChar gameChar = fillUser(charDAO, session, user, body, color, isParent, false);
+
+    // Chobots.org Modification - Default chatEnabled to true (originally false) due to probable lack of email activation configuration
+    Boolean chatEnabled = true;
+
+    GameChar gameChar = fillUser(charDAO, session, user, body, color, isParent, chatEnabled);
     addPartnerItem(session, info, gameChar);
     addInitialItems(session, gameChar, girls);
 

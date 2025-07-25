@@ -34,7 +34,6 @@ import com.kavalok.user.BadClientsCleaner;
 import com.kavalok.user.OnlineUsersCleaner;
 import com.kavalok.user.UserAdapter;
 import com.kavalok.user.UserManager;
-import com.kavalok.utils.DatabaseInitializer;
 import com.kavalok.utils.HibernateUtil;
 import com.kavalok.utils.ReflectUtil;
 import com.kavalok.utils.SOManager;
@@ -131,17 +130,6 @@ public class KavalokApplication extends MultiThreadedApplicationAdapter {
     String name = scope.getName();
     serverPath = String.format(CONTEXT_FORMAT, getHostIP(), name);
     logger.info("Started (" + serverPath + ")");
-
-    // Ensure server is present in DB before any lookups
-    DefaultTransactionStrategy initStrategy = new DefaultTransactionStrategy();
-    try {
-      initStrategy.beforeCall();
-      DatabaseInitializer.initialize(initStrategy.getSession(), serverPath, true);
-      initStrategy.afterCall();
-    } catch (Exception e) {
-      initStrategy.afterError(e);
-      logger.error("Database initialization failed: " + e.getMessage(), e);
-    }
 
     refreshServerState(true);
 
