@@ -201,8 +201,9 @@ public class UserUtil {
 
     GameCharDAO charDAO = new GameCharDAO(session);
 
-    // Chobots.org Modification - Default chatEnabled to true (originally false) due to probable lack of email activation configuration
+    // Chobots.org Modification - Default chatEnabled and activated to true (originally false) due to probable lack of email activation configuration
     Boolean chatEnabled = true;
+    Boolean activated = true;
 
     GameChar gameChar = fillUser(charDAO, session, user, body, color, isParent, chatEnabled);
     addPartnerItem(session, info, gameChar);
@@ -218,7 +219,7 @@ public class UserUtil {
 
     initMembershipInfo(session, user);
 
-    user.setActivated(false);
+    user.setActivated(activated);
     userDAO.makePersistent(user);
     if (locale != null && !familyMode && !email.equals(LoginService.GUEST_EMAIL)) {
       sendActivationMail(
