@@ -32,7 +32,10 @@ Goals of this project are as follows but not limited to:
 
 ## Running the code
 
-TODO: Improve these to be more novice friendly
+> [!CAUTION]
+> Until our efforts progress, this source contains numerous potentially extremely dangerous vulnerabilities. Running this
+> code locally, even if not published publicly, may expose you to security issues. Users run this code at their own
+> risk.
 
 ### Game
 1. Download and install Docker Desktop
